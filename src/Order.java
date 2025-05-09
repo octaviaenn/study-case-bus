@@ -5,6 +5,7 @@ import java.io.*;
 
 public class Order extends JPanel{
     private static JFrame frame;
+    private static String select = new String();
 
     public Order(JFrame frame){
         // frame, formPanel
@@ -24,6 +25,17 @@ public class Order extends JPanel{
                 if (seatAvail[start][end][index] == 1) {
                     JOptionPane.showMessageDialog(frame, "Kursi sudah dipilih!");
                     return;
+                }
+                else if(seatAvail[start][end][index] == 0){
+                    seatAvail[start][end][index] = 2;
+                    seat[start][end][index].setBackground(Color.PINK);
+                    frame.revalidate();
+                    select+=String.format("%d,%d,%d\n", start, end, index);
+                } else{
+                    select.replace(String.format("%d,%d,%d\n", start, end, index), "").trim();
+                    seatAvail[start][end][index] = 0;
+                    seat[start][end][index].setBackground(new Color(78, 153, 101));
+                    frame.revalidate();
                 }
                 // JOptionPane.showMessageDialog(panel, "Kursi berhasil dipilih!\nnyoba doang
                 // ges");
