@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Route extends JPanel {
-    private static JLabel hargaTiket;
+    private static JLabel hargaTiket = new JLabel();
     private static int start=0;
     private static int end=0;
 
@@ -50,8 +50,8 @@ public class Route extends JPanel {
         info.setPreferredSize(new Dimension(200, 30));
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
         add(info);
-        hargaTiket = new JLabel("Harga tiket: " + harga[1][1]);
-        hargaTiket.setForeground(new Color(68, 189, 100));
+        hargaTiket = new JLabel(harga[0][0]);
+        hargaTiket.setForeground(new Color(181, 78, 78));
         info.add(hargaTiket);
 
         // action listener

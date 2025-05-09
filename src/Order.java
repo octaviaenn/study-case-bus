@@ -94,8 +94,25 @@ public class Order extends JPanel{
                             // JOptionPane.showMessageDialog(panel, "Data tidak boleh kosong!");
                             if (isError)
                                 return;
+
                             isError = true;
-                            JLabel error = new JLabel("Data tidak boleh kosong!");
+                            int countError = 0;
+                            String err = "";
+
+                            if(nama.getText().isEmpty()){
+                                err += "Nama";
+                                countError++;
+                            }
+                            if(nik.getText().isEmpty()){
+                                if(countError>0) err += ", ";
+                                err += "Nik";
+                            }
+                            if(noHp.getText().isEmpty()){
+                                if(countError>0) err += ", ";
+                                err += "NoHp";
+                            }
+
+                            JLabel error = new JLabel(err+" tidak boleh kosong!");
                             error.setForeground(Color.RED);
                             info2.add(error);
                             info2.revalidate();
