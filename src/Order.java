@@ -6,6 +6,7 @@ import java.io.*;
 public class Order extends JPanel{
     private static JFrame frame;
     private static String select = new String();
+    private static boolean flag = false;
 
     public Order(JFrame frame){
         // frame, formPanel
@@ -40,6 +41,7 @@ public class Order extends JPanel{
                 // JOptionPane.showMessageDialog(panel, "Kursi berhasil dipilih!\nnyoba doang
                 // ges");
                 // setVisible(false);
+                if(flag) return;
                 order.removeAll();
                 order.revalidate();
                 order.repaint();
@@ -86,9 +88,34 @@ public class Order extends JPanel{
 
                 KeyListener clearError = new KeyAdapter() {
                     public void keyTyped(KeyEvent e) {
-                        if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty())
-                            return;
+//                        if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty())
+//                            return;
                         info2.removeAll();
+
+                        int countError = 0;
+                        String err = "";
+
+                        if(nama.getText().isEmpty()){
+                            err += "Nama";
+                            countError++;
+                        }
+                        if(nik.getText().isEmpty()){
+                            if(countError>0) err += ", ";
+                            countError++;
+                            err += "Nik";
+                        }
+                        if(noHp.getText().isEmpty()){
+                            if(countError>0) err += ", ";
+                            err += "No HP";
+                        }
+
+                        JLabel error = new JLabel();
+
+                        if(err!=""){
+                            error.setText(err+" tidak boleh kosong!");
+                            error.setForeground(Color.RED);
+                            info2.add(error);
+                        }
                         info2.revalidate();
                         info2.repaint();
                     }
@@ -97,6 +124,7 @@ public class Order extends JPanel{
                 nama.addKeyListener(clearError);
                 nik.addKeyListener(clearError);
                 noHp.addKeyListener(clearError);
+                flag = true;
 
                 submit.addActionListener(new ActionListener() {
                     boolean isError = false;
@@ -104,30 +132,10 @@ public class Order extends JPanel{
                     public void actionPerformed(ActionEvent e) {
                         if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty()) {
                             // JOptionPane.showMessageDialog(panel, "Data tidak boleh kosong!");
-                            if (isError)
-                                return;
+//                            if (isError)
+//                                return;
 
                             isError = true;
-                            int countError = 0;
-                            String err = "";
-
-                            if(nama.getText().isEmpty()){
-                                err += "Nama";
-                                countError++;
-                            }
-                            if(nik.getText().isEmpty()){
-                                if(countError>0) err += ", ";
-                                err += "Nik";
-                            }
-                            if(noHp.getText().isEmpty()){
-                                if(countError>0) err += ", ";
-                                err += "NoHp";
-                            }
-
-                            JLabel error = new JLabel(err+" tidak boleh kosong!");
-                            error.setForeground(Color.RED);
-                            info2.add(error);
-                            info2.revalidate();
                             return;
                         }
 
@@ -135,8 +143,19 @@ public class Order extends JPanel{
                             JOptionPane.showMessageDialog(frame, "Perbaiki pilihan lokasi anda!");
                             return;
                         }
-                        seatAvail[start][end][index] = 1;
-                        seat[start][end][index].setBackground(new Color(181, 78, 78));
+                        String[] selected = select.split("\n");
+                        for(int i=0; i<selected.length; i++){
+                            String[] idx = selected[i].split(",");
+                            int st, en, in;
+                            st = Integer.parseInt(idx[0]);
+                            en = Integer.parseInt(idx[1]);
+                            in = Integer.parseInt(idx[2]);
+                            seatAvail[st][en][in] = 1;
+                            seat[st][en][in].setBackground(new Color(181, 78, 78));
+                        }
+
+                        select="";
+                        flag = false;
                         JOptionPane.showMessageDialog(frame, "Tiket berhasil dipesan!");
                         // semua filewriter gbs keknya gara gara ga di ide macem intellij dah
                         // try (BufferedWriter writer = new BufferedWriter(new FileWriter("seat.txt",
@@ -172,6 +191,7 @@ public class Order extends JPanel{
                         // JOptionPane.showMessageDialog(panel, "Terjadi kesalahan saat menyimpan data
                         // ke data.txt!");
                         // }
+                        order.setVisible(false);
                         frame.revalidate();
                     }
                 });
