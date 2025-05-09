@@ -6,7 +6,8 @@ import java.io.*;
 
 public class Route extends JPanel {
     private static JLabel hargaTiket;
-
+    private static int start=0;
+    private static int end=0;
 
     public Route(JFrame frame) {
         setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -55,12 +56,12 @@ public class Route extends JPanel {
 
         // action listener
 
-        ActionListener updateHarga = new ActionListener() {
+        ActionListener updateData = new ActionListener() {
             boolean changed = false;
             public void actionPerformed(ActionEvent e) {
                     String selectedItem = (String) lokasiAwal.getSelectedItem();
                     String selectedItem2 = (String) lokasiAkhir.getSelectedItem();
-                    int index = switch (selectedItem) {
+                    int start = switch (selectedItem) {
                         case "Wilangan" -> 0;
                         case "Ngawi" -> 1;
                         case "Gendingan" -> 2;
@@ -70,7 +71,7 @@ public class Route extends JPanel {
                         case "Magelang" -> 6;
                         default -> 0;
                     };
-                    int index2 = switch (selectedItem2) {
+                    int end = switch (selectedItem2) {
                         case "Wilangan" -> 0;
                         case "Ngawi" -> 1;
                         case "Gendingan" -> 2;
@@ -80,11 +81,11 @@ public class Route extends JPanel {
                         case "Magelang" -> 6;
                         default -> 0;
                     };
-                    if (harga[index][index2].equals(invalid)) {
+                    if (harga[start][end].equals(invalid)) {
                         hargaTiket.setText(invalid);
                         hargaTiket.setForeground(Color.RED);
                     } else {
-                        hargaTiket.setText("Harga tiket: " + harga[index][index2]);
+                        hargaTiket.setText("Harga tiket: " + harga[start][end]);
                         hargaTiket.setForeground(new Color(68, 189, 100));
                     }
                     if (changed) {
@@ -94,15 +95,24 @@ public class Route extends JPanel {
                         info.add(hargaTiket);
                     }
                     changed = true;
+
                 }
             };
 
-        lokasiAwal.addActionListener(updateHarga);
-        lokasiAkhir.addActionListener(updateHarga);
+        lokasiAwal.addActionListener(updateData);
+        lokasiAkhir.addActionListener(updateData);
     }
 
     public static JLabel getHargaTiket(){
         return hargaTiket;
+    }
+
+    public static int getStart(){
+        return start;
+    }
+
+    public static int getEnd(){
+        return end;
     }
 
 //    private

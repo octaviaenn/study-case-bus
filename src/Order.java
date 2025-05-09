@@ -15,13 +15,13 @@ public class Order extends JPanel{
 
     // action listener
 
-    public static ActionListener chooseSeat(JPanel order, final int indexChar, final int indexNum){
+    public static ActionListener chooseSeat(JPanel order, final int start, final int end, final int index){
         return new ActionListener(){
-            boolean[][] seatAvail = Bus.getSeatAvail();
-            JButton[][] seat = Bus.getSeat();
+            int[][][] seatAvail = Bus.getSeatAvail();
+            JButton[][][] seat = Bus.getSeat();
             JLabel hargaTiket = Route.getHargaTiket();
             public void actionPerformed(ActionEvent e) {
-                if (seatAvail[indexChar][indexNum] == false) {
+                if (seatAvail[start][end][index] == 1) {
                     JOptionPane.showMessageDialog(frame, "Kursi sudah dipilih!");
                     return;
                 }
@@ -106,13 +106,13 @@ public class Order extends JPanel{
                             JOptionPane.showMessageDialog(frame, "Perbaiki pilihan lokasi anda!");
                             return;
                         }
-                        seatAvail[indexChar][indexNum] = false;
-                        seat[indexChar][indexNum].setBackground(new Color(181, 78, 78));
+                        seatAvail[start][end][index] = 1;
+                        seat[start][end][index].setBackground(new Color(181, 78, 78));
                         JOptionPane.showMessageDialog(frame, "Tiket berhasil dipesan!");
                         // semua filewriter gbs keknya gara gara ga di ide macem intellij dah
                         // try (BufferedWriter writer = new BufferedWriter(new FileWriter("seat.txt",
                         // true))) {
-                        // String text = String.valueOf(indexChar) + "," + String.valueOf(indexNum) +
+                        // String text = String.valueOf(indexChar) + "," + String.valueOf(index) +
                         // "\n";
                         // writer.write(text);
                         // System.out.println("Write success.");
@@ -122,14 +122,14 @@ public class Order extends JPanel{
                         // }
 
                         // try (var writer = new FileWriter("seat.txt", true)) {
-                        // String text = String.valueOf(indexChar) + String.valueOf(indexNum) + ",";
+                        // String text = String.valueOf(indexChar) + String.valueOf(index) + ",";
                         // writer.write(text);
                         // } catch (IOException e) {
                         // System.err.println("Gagal menulis ke file");
                         // }
                         // try (FileWriter writer = new FileWriter("seat.txt", true)) {
-                        // writer.write(String.valueOf(indexChar) + String.valueOf(indexNum) + ",");
-                        // //System.out.println(indexChar + indexNum + ",");
+                        // writer.write(String.valueOf(indexChar) + String.valueOf(index) + ",");
+                        // //System.out.println(indexChar + index + ",");
                         // } catch (IOException e) {
                         // //System.err.println("Terjadi kesalahan saat menyimpan data ke seat.txt!");
                         // e.printStackTrace(); // Optional, for debugging

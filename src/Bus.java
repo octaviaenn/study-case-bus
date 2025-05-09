@@ -3,8 +3,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Bus extends JPanel{
-    private static boolean[][] seatAvail = new boolean[2][22];
-    private static final JButton[][] seat = new JButton[2][22];
+    private static int[][][] seatAvail = new int[7][7][40];
+    private static final JButton[][][] seat = new JButton[7][7][40];
+    private boolean init = true;
 
     public Bus(JPanel order){
         setLayout(new BorderLayout());
@@ -30,10 +31,14 @@ public class Bus extends JPanel{
         String[] A = { "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15",
                 "A16", "A17", "A18" };
 
-
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 22; j++) {
-                seatAvail[i][j] = true;
+    // nanti kalo datanya ada, init = false;
+        if(init){
+            for (int i = 0; i < 7; i++) {
+                for(int j = 0; j<7; j++){
+                    for(int k = 0; k<40; k++){
+                        seatAvail[i][j][k] = 0;
+                    }
+                }
             }
         }
 
@@ -45,18 +50,20 @@ public class Bus extends JPanel{
         leftPanel.add(kondektur);
         leftPanel.add(padding1);
 
+        int start = Route.getStart();
+        int end = Route.getEnd();
+
         for (int i = 0; i < 18; i++) {
-            final int indexChar1 = 0;
-            final int indexNum1 = i;
-            seat[0][i] = new JButton(A[i]);
-            seat[0][i].setPreferredSize(new Dimension(80, 30));
-            seat[0][i].addActionListener(
-                    Order.chooseSeat(order, indexChar1, indexNum1));
-            if (seatAvail[0][i] == true)
-                seat[0][i].setBackground(new Color(78, 153, 101));
+            final int indexA = i;
+            seat[start][end][i] = new JButton(A[i]);
+            seat[start][end][i].setPreferredSize(new Dimension(80, 30));
+            seat[start][end][i].addActionListener(
+                    Order.chooseSeat(order, start, end, indexA));
+            if (seatAvail[start][end][i] == 0)
+                seat[start][end][i].setBackground(new Color(78, 153, 101));
             else
-                seat[0][i].setBackground(new Color(181, 78, 78));
-            leftPanel.add(seat[0][i]);
+                seat[start][end][i].setBackground(new Color(181, 78, 78));
+            leftPanel.add(seat[start][end][i]);
         }
         leftPanel.add(padding2);
         leftPanel.add(pintuBelakang);
@@ -72,25 +79,24 @@ public class Bus extends JPanel{
         rightPanel.add(driver);
         rightPanel.add(padding);
         for (int i = 0; i < 22; i++) {
-            final int indexChar = 1;
-            final int indexNum = i;
-            seat[1][i] = new JButton(B[i]);
-            seat[1][i].setPreferredSize(new Dimension(80, 30));
-            seat[1][i].addActionListener(Order.chooseSeat(order, indexChar, indexNum));
-            if (seatAvail[1][i] == true)
-                seat[1][i].setBackground(new Color(78, 153, 101));
+            final int indexB = i;
+            seat[start][end][i] = new JButton(B[i]);
+            seat[start][end][i].setPreferredSize(new Dimension(80, 30));
+            seat[start][end][i].addActionListener(Order.chooseSeat(order, start, end, indexB));
+            if (seatAvail[start][end][i] == 0)
+                seat[start][end][i].setBackground(new Color(78, 153, 101));
             else
-                seat[1][i].setBackground(new Color(181, 78, 78));
-            rightPanel.add(seat[1][i]);
+                seat[start][end][i].setBackground(new Color(181, 78, 78));
+            rightPanel.add(seat[start][end][i]);
         }
 
     }
 
-    public static boolean[][] getSeatAvail(){
+    public static int[][][] getSeatAvail(){
         return seatAvail;
     }
 
-    public static JButton[][] getSeat(){
+    public static JButton[][][] getSeat(){
         return seat;
     }
 }
