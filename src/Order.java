@@ -5,12 +5,14 @@ import java.io.*;
 
 public class Order extends JPanel{
     private static JFrame frame;
+    private static JPanel panel;
     private static String select = new String();
     private static boolean flag = false;
 
-    public Order(JFrame frame){
+    public Order(JFrame frame, JPanel panel){
         // frame, formPanel
         this.frame = frame;
+        this.panel = panel;
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setPreferredSize(new Dimension(300, 700));
     }
@@ -19,23 +21,43 @@ public class Order extends JPanel{
 
     public static ActionListener chooseSeat(JPanel order, final int start, final int end, final int index){
         return new ActionListener(){
-            int[][][] seatAvail = Bus.getSeatAvail();
-            JButton[][][] seat = Bus.getSeat();
-            JLabel hargaTiket = Route.getHargaTiket();
+
             public void actionPerformed(ActionEvent e) {
+                int[][][] seatAvail = Bus.getSeatAvail();
+                JButton[][][] seat = Bus.getSeat();
+                JLabel hargaTiket = Route.getHargaTiket();
+
                 if (seatAvail[start][end][index] == 1) {
                     JOptionPane.showMessageDialog(frame, "Kursi sudah dipilih!");
                     return;
                 }
                 else if(seatAvail[start][end][index] == 0){
-                    seatAvail[start][end][index] = 2;
-                    seat[start][end][index].setBackground(Color.PINK);
+                    System.out.println("Masuk else if buat select seatAvail:"+seatAvail[start][end][index]);
+                    for(int i=0; i<6; i++){
+                        for(int j=i+1; j<=6; j++){
+                            Bus.setSeatAvail(i, j, index, 2);
+                            Bus.setSeat(i, j, index, Color.PINK);
+                            Bus.setSeatAvail(j, i, index, 2);
+                            Bus.setSeat(j, i, index, Color.PINK);
+                        }
+                    }
+                    Bus.updateSeat();
                     frame.revalidate();
                     select+=String.format("%d,%d,%d\n", start, end, index);
                 } else{
+                    System.out.println("Masuk else buat unselect");
                     select.replace(String.format("%d,%d,%d\n", start, end, index), "").trim();
-                    seatAvail[start][end][index] = 0;
-                    seat[start][end][index].setBackground(new Color(78, 153, 101));
+                    for(int i=0; i<6; i++){
+                        for(int j=i+1; j<=6; j++){
+                            Bus.setSeatAvail(i, j, index, 0);
+                            Bus.setSeat(i, j, index, new Color(78, 153, 101));
+                            Bus.setSeatAvail(j, i, index, 0);
+                            Bus.setSeat(j, i, index, new Color(78, 153, 101));
+                        }
+                    }
+                    Bus.updateSeat();
+//                    seatAvail[start][end][index] = 0;
+//                    seat[start][end][index].setBackground(new Color(78, 153, 101));
                     frame.revalidate();
                 }
                 // JOptionPane.showMessageDialog(panel, "Kursi berhasil dipilih!\nnyoba doang
@@ -93,7 +115,7 @@ public class Order extends JPanel{
                         info2.removeAll();
 
                         int countError = 0;
-                        String err = "";
+                        String err = "", err2 = "";
 
                         if(nama.getText().isEmpty()){
                             err += "Nama";
@@ -110,11 +132,33 @@ public class Order extends JPanel{
                         }
 
                         JLabel error = new JLabel();
+                        JLabel error2 = new JLabel();
 
                         if(err!=""){
                             error.setText(err+" tidak boleh kosong!");
                             error.setForeground(Color.RED);
                             info2.add(error);
+                        }
+
+                        boolean isError2 = false;
+                        try{
+                            int num = Integer.parseInt(nik.getText());
+                        } catch(NumberFormatException ex){
+                            err2+="NIK";
+                            isError2 = true;
+                        }
+
+                        try{
+                            int num = Integer.parseInt(noHp.getText());
+                        } catch(NumberFormatException ex){
+                            if(isError2) err2+=", ";
+                            err2+="No HP";
+                        }
+
+                        if(err2!=""){
+                            error2.setText(err2+" harus berupa angka");
+                            error2.setForeground(Color.RED);
+                            info2.add(error2);
                         }
                         info2.revalidate();
                         info2.repaint();
@@ -130,6 +174,7 @@ public class Order extends JPanel{
                     boolean isError = false;
 
                     public void actionPerformed(ActionEvent e) {
+
                         if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty()) {
                             // JOptionPane.showMessageDialog(panel, "Data tidak boleh kosong!");
 //                            if (isError)
@@ -143,6 +188,7 @@ public class Order extends JPanel{
                             JOptionPane.showMessageDialog(frame, "Perbaiki pilihan lokasi anda!");
                             return;
                         }
+
                         String[] selected = select.split("\n");
                         for(int i=0; i<selected.length; i++){
                             String[] idx = selected[i].split(",");
@@ -150,13 +196,41 @@ public class Order extends JPanel{
                             st = Integer.parseInt(idx[0]);
                             en = Integer.parseInt(idx[1]);
                             in = Integer.parseInt(idx[2]);
-                            seatAvail[st][en][in] = 1;
-                            seat[st][en][in].setBackground(new Color(181, 78, 78));
+
+                            if(st<en){
+                                for(int j=st+1; j<=en; j++){
+                                    for(int k=j-1; k>=0; k--){
+                                        //seatAvail[k][j][in] = 1;
+                                        Bus.setSeatAvail(k, j, in, 1);
+                                        //seat[k][j][in].setBackground();
+                                        Bus.setSeat(k, j, in, new Color(181, 78, 78));
+                                    }
+                                }
+                            } else{
+                                for(int j=end; j<=start; j++){
+                                    for(int k=j+1; k<=6; k++){
+                                        //seatAvail[k][j][in] = 1;
+                                        Bus.setSeatAvail(k, j, in, 1);
+                                        //seat[k][j][in].setBackground();
+                                        Bus.setSeat(k, j, in, new Color(181, 78, 78));
+                                    }
+                                }
+                            }
+
+
                         }
+
+
 
                         select="";
                         flag = false;
+                        order.setVisible(false);
+                        Bus.updateSeat();
+
+                        panel.revalidate();
                         JOptionPane.showMessageDialog(frame, "Tiket berhasil dipesan!");
+
+
                         // semua filewriter gbs keknya gara gara ga di ide macem intellij dah
                         // try (BufferedWriter writer = new BufferedWriter(new FileWriter("seat.txt",
                         // true))) {
@@ -191,8 +265,8 @@ public class Order extends JPanel{
                         // JOptionPane.showMessageDialog(panel, "Terjadi kesalahan saat menyimpan data
                         // ke data.txt!");
                         // }
-                        order.setVisible(false);
-                        frame.revalidate();
+
+                        //frame.revalidate();
                     }
                 });
 

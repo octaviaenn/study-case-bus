@@ -61,7 +61,7 @@ public class Route extends JPanel {
             public void actionPerformed(ActionEvent e) {
                     String selectedItem = (String) lokasiAwal.getSelectedItem();
                     String selectedItem2 = (String) lokasiAkhir.getSelectedItem();
-                    int start = switch (selectedItem) {
+                    start = switch (selectedItem) {
                         case "Wilangan" -> 0;
                         case "Ngawi" -> 1;
                         case "Gendingan" -> 2;
@@ -71,7 +71,7 @@ public class Route extends JPanel {
                         case "Magelang" -> 6;
                         default -> 0;
                     };
-                    int end = switch (selectedItem2) {
+                    end = switch (selectedItem2) {
                         case "Wilangan" -> 0;
                         case "Ngawi" -> 1;
                         case "Gendingan" -> 2;
@@ -85,18 +85,21 @@ public class Route extends JPanel {
                         hargaTiket.setText(invalid);
                         hargaTiket.setForeground(Color.RED);
                     } else {
+                        Bus.updateSeat();
                         hargaTiket.setText("Harga tiket: " + harga[start][end]);
                         hargaTiket.setForeground(new Color(68, 189, 100));
                     }
+
                     if (changed) {
                         info.remove(hargaTiket);
                         info.revalidate();
                         info.repaint();
                         info.add(hargaTiket);
                     }
-                    changed = true;
 
-                }
+                changed = true;
+
+            }
             };
 
         lokasiAwal.addActionListener(updateData);

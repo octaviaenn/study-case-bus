@@ -3,6 +3,8 @@ import java.awt.*;
 import java.io.*;
 
 public class Main {
+    //public static Bus topPanel;
+
     public static void main(String[] args) {
 
         final JFrame frame = new JFrame("Pemesanan Bus Eka");
@@ -14,9 +16,11 @@ public class Main {
         panel.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(400, 800));
 
-        Order formPanel = new Order(frame);
+        Order formPanel = new Order(frame, panel);
 
-        Bus topPanel = new Bus(formPanel);
+        Bus topPanel = new Bus(formPanel, frame);
+        topPanel.setObj(topPanel);
+
         panel.add(topPanel, BorderLayout.NORTH);
 
 
@@ -72,5 +76,9 @@ public class Main {
         frame.setVisible(true);
 
     }
+
+//    public static Bus getTopPanel() {
+//        return topPanel;
+//    }
 
 }
