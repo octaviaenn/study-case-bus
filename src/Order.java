@@ -43,11 +43,11 @@ public class Order extends JPanel{
                     }
                     Bus.updateSeat();
                     frame.revalidate();
-                    select+=String.format("%d,%d,%d\n", start, end, index);
+                    select = select + String.format("%d,%d,%d\n", start, end, index);
                     System.out.println("SElect:"+select);
                 } else{
                     System.out.println("Masuk else buat unselect");
-                    select.replace(String.format("%d,%d,%d\n", start, end, index), "").trim();
+                    select = select.replace(String.format("%d,%d,%d\n", start, end, index), "");
                     for(int i=0; i<6; i++){
                         for(int j=i+1; j<=6; j++){
                             Bus.setSeatAvail(i, j, index, 0);
@@ -59,6 +59,7 @@ public class Order extends JPanel{
                     Bus.updateSeat();
                     frame.revalidate();
                     System.out.println("UNSElect:"+select);
+                    return;
                 }
                 if(flag) return;
                 order.removeAll();
@@ -165,6 +166,10 @@ public class Order extends JPanel{
 
                     public void actionPerformed(ActionEvent e) {
 
+                        if(select.equals("")){
+                            JOptionPane.showMessageDialog(frame, "Anda belum memilih kursi");
+                        }
+
                         if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty()) {
                             isError = true;
                             return;
@@ -200,6 +205,13 @@ public class Order extends JPanel{
                                         Bus.setSeatAvail(k, j, in, 1);
                                         //seat[k][j][in].setBackground();
                                         Bus.setSeat(k, j, in, new Color(181, 78, 78));
+
+                                    }
+                                }
+                                for(int j=st; j<en; j++){
+                                    for(int k=j+1; k<7; k++){
+                                        Bus.setSeatAvail(j, k, in, 1);
+                                        Bus.setSeat(j, k, in, new Color(181, 78, 78));
                                     }
                                 }
                             } else{
@@ -208,6 +220,12 @@ public class Order extends JPanel{
                                         //seatAvail[k][j][in] = 1;
                                         Bus.setSeatAvail(k, j, in, 1);
                                         //seat[k][j][in].setBackground();
+                                        Bus.setSeat(k, j, in, new Color(181, 78, 78));
+                                    }
+                                }
+                                for(int j=st; j>en; j--){
+                                    for(int k=j-1; k>=0; k--){
+                                        Bus.setSeatAvail(k, j, in, 1);
                                         Bus.setSeat(k, j, in, new Color(181, 78, 78));
                                     }
                                 }

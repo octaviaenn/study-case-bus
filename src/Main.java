@@ -2,12 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 public class Main {
     //public static Bus topPanel;
 
-    public static void main(String[] args) {
+    public static void getApp() {
         final JFrame frame = new JFrame("Pemesanan Bus Eka");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 700);

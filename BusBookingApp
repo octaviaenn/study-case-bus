@@ -27,7 +27,7 @@ public class BusBookingApp extends JFrame {
 //        Bus bus = new Bus(new Order(this, busBookingPanel), this);
 //        busBookingPanel.add(bus, BorderLayout.CENTER);
 //        busBookingPanel.add(new Route(this), BorderLayout.SOUTH);
-//        mainPanel.add(busBookingPanel, "BusBooking");
+//        mainPanel.add(busBookingPanel, "Main");
 
         add(mainPanel);
         cardLayout.show(mainPanel, "OnboardingPage1"); // mastiin mulainya dari OnboardingPage1

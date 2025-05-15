@@ -54,7 +54,7 @@ public class OnboardingPage2 {
 
         // Tempat untuk gambar (ukuran 500x400)
         JLabel imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon("Bus2.png");
+        ImageIcon imageIcon = new ImageIcon("src\\Bus2.png");
         Image image = imageIcon.getImage().getScaledInstance(500, 400, Image.SCALE_SMOOTH);
         imageLabel.setIcon(new ImageIcon(image));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
