@@ -31,6 +31,7 @@ public class SignInPage {
 
         // Field nomor telepon
         JTextField phoneField = new JTextField("Phone Number");
+        SignUpPage.erase(phoneField, panel);
         phoneField.setMaximumSize(new Dimension(250, 40));
         phoneField.setAlignmentX(Component.CENTER_ALIGNMENT);
         phoneField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -44,6 +45,7 @@ public class SignInPage {
 
         // Field email
         JTextField emailField = new JTextField("Email");
+        SignUpPage.erase(emailField, panel);
         emailField.setMaximumSize(new Dimension(250, 40));
         emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
         emailField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -155,7 +157,7 @@ public class SignInPage {
                 User user = new User(phoneText, emailText, passwordText);
                 app.setCurrentUser(user);
                 JOptionPane.showMessageDialog(app, "Login berhasil!");
-                app.showPage("BusBooking"); // Beralih ke halaman pemesanan tiket bus
+                Main.getApp(); // Beralih ke halaman pemesanan tiket bus
             }
         });
 

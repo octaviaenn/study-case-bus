@@ -1,11 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class SignUpPage {
     private BusBookingApp app;
 
     public SignUpPage(BusBookingApp app) {
         this.app = app;
+    }
+
+    public static void erase(JTextField input, JPanel panel){
+        KeyAdapter keyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                input.setText("");
+                input.removeKeyListener(this);
+                panel.revalidate();
+            }
+        };
+        input.addKeyListener(keyListener);
     }
 
     public JPanel createSignUpPage() {
@@ -31,6 +46,7 @@ public class SignUpPage {
 
         // Field nomor telepon
         JTextField phoneField = new JTextField("Phone Number");
+        erase(phoneField, panel);
         phoneField.setMaximumSize(new Dimension(250, 40));
         phoneField.setAlignmentX(Component.CENTER_ALIGNMENT);
         phoneField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -44,6 +60,7 @@ public class SignUpPage {
 
         // Field email
         JTextField emailField = new JTextField("Email");
+        erase(emailField, panel);
         emailField.setMaximumSize(new Dimension(250, 40));
         emailField.setAlignmentX(Component.CENTER_ALIGNMENT);
         emailField.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -195,7 +212,7 @@ public class SignUpPage {
                 User user = new User(phoneText, emailText, passwordText);
                 app.setCurrentUser(user);
                 JOptionPane.showMessageDialog(app, "Akun berhasil dibuat!");
-                app.showPage("BusBooking"); // pindah ke halaman pemesanan tiket bus
+                Main.getApp(); // pindah ke halaman pemesanan tiket bus
             }
         });
 
