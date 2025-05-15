@@ -240,12 +240,12 @@ public class Order extends JPanel{
                         //System.out.println("SUBMITTTTTTTTTT "+ select);
                         try{
                             int[][][] avail = Bus.getSeatAvail();
-                            BufferedWriter writer = new BufferedWriter(new FileWriter("seat/txt", false));
+                            BufferedWriter writer = new BufferedWriter(new FileWriter("seat.txt", false));
                             String text="";
                             System.out.println("masuk writer");
                             for(int i=0; i<7; i++){
                                 for(int j=0; j<7; j++){
-                                    for(int k=1; k<41; k++){
+                                    for(int k=0; k<40; k++){
                                         text = text + i +","+ j +","+ k +","+avail[i][j][k] +"\n";
                                     }
                                 }

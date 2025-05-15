@@ -86,7 +86,7 @@ public class Bus extends JLayeredPane{
 
         if(!init){
             try{
-                BufferedReader reader = new BufferedReader(new FileReader("seat/txt"));
+                BufferedReader reader = new BufferedReader(new FileReader("seat.txt"));
                 String line;
                 while((line = reader.readLine()) != null){
                     String[] idx = line.split(",");

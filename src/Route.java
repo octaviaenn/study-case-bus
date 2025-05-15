@@ -53,7 +53,7 @@ public class Route extends JPanel {
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
         add(info);
         //hargaTiket = new JLabel(harga[0][0]);
-        hargaTiket.setForeground(Color.RED);
+        hargaTiket.setForeground(new Color(181, 78, 78));
         info.add(hargaTiket);
 
         // action listener
