@@ -10,6 +10,7 @@ public class Booking extends JPanel {
     private JTable tabelPemesanan;
     private DefaultTableModel modelTabel;
     private JFrame frameInduk;
+    private static JFrame framePemesanan = new JFrame("Data Pemesanan Bus Eka");
 
     public Booking(JFrame frame) {
         this.frameInduk = frame;
@@ -59,6 +60,10 @@ public class Booking extends JPanel {
         panelFilter.add(tombolReset);
         tombolReset.setBackground(new Color(0xDCA0A6));
 
+        JButton back = new JButton("Close");
+        panelFilter.add(back);
+        back.setBackground(new Color(0xDCA0A6));
+
         add(panelFilter, BorderLayout.SOUTH);
 
         tombolFilter.addActionListener(new ActionListener() {
@@ -76,6 +81,13 @@ public class Booking extends JPanel {
                 filterAsal.setSelectedIndex(0);
                 filterTujuan.setSelectedIndex(0);
                 perbaruiTabel();
+            }
+        });
+
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                framePemesanan.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                framePemesanan.dispose();
             }
         });
     }
@@ -123,7 +135,7 @@ public class Booking extends JPanel {
     }
 
     public static void View() {
-        JFrame framePemesanan = new JFrame("Data Pemesanan Bus Eka");
+
         framePemesanan.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         framePemesanan.setSize(700, 500);
 

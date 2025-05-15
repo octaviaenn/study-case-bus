@@ -213,6 +213,8 @@ public class SignUpPage {
                 app.setCurrentUser(user);
                 JOptionPane.showMessageDialog(app, "Akun berhasil dibuat!");
                 Main.getApp(); // pindah ke halaman pemesanan tiket bus
+                //app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                app.dispose();
             }
         });
 

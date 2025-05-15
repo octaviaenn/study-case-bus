@@ -8,6 +8,7 @@ public class Order extends JPanel{
     private static JPanel panel;
     private static String select = new String();
     private static boolean flag = false;
+    private static JLayeredPane bus;
 
     public Order(JFrame frame, JPanel panel){
         // frame, formPanel
@@ -15,6 +16,10 @@ public class Order extends JPanel{
         this.panel = panel;
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setPreferredSize(new Dimension(300, 700));
+    }
+
+    public void setObj(JLayeredPane bus){
+        this.bus = bus;
     }
 
     // action listener
@@ -32,21 +37,21 @@ public class Order extends JPanel{
                     return;
                 }
                 else if(seatAvail[start][end][index] == 0){
-                    System.out.println("Masuk else if buat select seatAvail:"+seatAvail[start][end][index]);
+                    //System.out.println("Masuk else if buat select seatAvail:"+seatAvail[start][end][index]);
                     for(int i=0; i<6; i++){
                         for(int j=i+1; j<=6; j++){
                             Bus.setSeatAvail(i, j, index, 2);
-                            Bus.setSeat(i, j, index, Color.PINK);
+                            Bus.setSeat(i, j, index, new Color(220, 160, 166));
                             Bus.setSeatAvail(j, i, index, 2);
-                            Bus.setSeat(j, i, index, Color.PINK);
+                            Bus.setSeat(j, i, index, new Color(220, 160, 166));
                         }
                     }
                     Bus.updateSeat();
                     frame.revalidate();
                     select = select + String.format("%d,%d,%d\n", start, end, index);
-                    System.out.println("SElect:"+select);
+                    //System.out.println("SElect:"+select);
                 } else{
-                    System.out.println("Masuk else buat unselect");
+                    //System.out.println("Masuk else buat unselect");
                     select = select.replace(String.format("%d,%d,%d\n", start, end, index), "");
                     for(int i=0; i<6; i++){
                         for(int j=i+1; j<=6; j++){
@@ -58,7 +63,7 @@ public class Order extends JPanel{
                     }
                     Bus.updateSeat();
                     frame.revalidate();
-                    System.out.println("UNSElect:"+select);
+                    //System.out.println("UNSElect:"+select);
                     return;
                 }
                 if(flag) return;
@@ -232,9 +237,10 @@ public class Order extends JPanel{
                             }
                         }
 
-                        System.out.println("SUBMITTTTTTTTTT "+ select);
+                        //System.out.println("SUBMITTTTTTTTTT "+ select);
                         select="";
-
+                        bus.add(Bus.getOverlay(), JLayeredPane.PALETTE_LAYER);
+                        bus.revalidate();
                         flag = false;
                         order.setVisible(false);
                         Bus.updateSeat();

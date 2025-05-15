@@ -7,7 +7,7 @@ public class Main {
     //public static Bus topPanel;
 
     public static void getApp() {
-        final JFrame frame = new JFrame("Pemesanan Bus Eka");
+        final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 700);
         frame.setLayout(new BorderLayout());
@@ -20,6 +20,7 @@ public class Main {
 
         Bus topPanel = new Bus(formPanel, frame);
         topPanel.setObj(topPanel);
+        formPanel.setObj(topPanel);
 
         panel.add(topPanel, BorderLayout.NORTH);
         JPanel bawah = new JPanel();
@@ -44,7 +45,7 @@ public class Main {
 
         frame.add(panel, BorderLayout.WEST);
         frame.add(formPanel, BorderLayout.EAST);
-
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

@@ -48,6 +48,10 @@ public class BusBookingApp extends JFrame {
         return currentUser;
     }
 
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(BusBookingApp::new);
     }

@@ -157,7 +157,10 @@ public class SignInPage {
                 User user = new User(phoneText, emailText, passwordText);
                 app.setCurrentUser(user);
                 JOptionPane.showMessageDialog(app, "Login berhasil!");
-                Main.getApp(); // Beralih ke halaman pemesanan tiket bus
+                Main.getApp();
+                //app.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                app.dispose();
+                // Beralih ke halaman pemesanan tiket bus
             }
         });
 
