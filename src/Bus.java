@@ -1,11 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.*;
 
 public class Bus extends JLayeredPane{
     private static int[][][] seatAvail = new int[7][7][40];
     private static final JButton[][][] seat = new JButton[7][7][40];
-    private boolean init = true;
+    private static boolean init = true;
     private static JFrame frame;
     private static JPanel leftPanel = new JPanel();
     private static JPanel rightPanel = new JPanel();
@@ -25,12 +28,12 @@ public class Bus extends JLayeredPane{
 
 
         //leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        leftPanel.setPreferredSize(new Dimension(200, 450));
+        leftPanel.setPreferredSize(new Dimension(180, 450));
         //mainPanel.add(leftPanel, BorderLayout.WEST);
 
 
         //rightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        rightPanel.setPreferredSize(new Dimension(200, 450));
+        rightPanel.setPreferredSize(new Dimension(180, 450));
         //mainPanel.add(rightPanel, BorderLayout.EAST);
 
 
@@ -48,6 +51,7 @@ public class Bus extends JLayeredPane{
         }
 
         updateSeat();
+        init = true;
         overlay.setOpaque(true);
         overlay.setBackground(new Color(220,160,166,50));
         overlay.setLayout(null);
@@ -80,14 +84,28 @@ public class Bus extends JLayeredPane{
             rightPanel.removeAll();
         }
 
-        for (int i = 0; i < 7; i++) {
-            for(int j = 0; j<7; j++){
-                for(int k = 0; k<40; k++){
-                    System.out.print(seatAvail[i][j][k]+" ");
-                    // seat[i][j][k] = new JButton();
-                } System.out.println();
-            } System.out.println();
+        if(!init){
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader("seat/txt"));
+                String line;
+                while((line = reader.readLine()) != null){
+                    String[] idx = line.split(",");
+                    seatAvail[Integer.parseInt(idx[0])][Integer.parseInt(idx[1])][Integer.parseInt(idx[2])] = Integer.parseInt(idx[3]);
+                    // logic
+                } reader.close();
+            } catch (IOException e){
+                System.err.println("Terjadi kesalahan saat membaca file");
+            }
         }
+
+//        for (int i = 0; i < 7; i++) {
+//            for(int j = 0; j<7; j++){
+//                for(int k = 0; k<40; k++){
+//                    System.out.print(seatAvail[i][j][k]+" ");
+//                    // seat[i][j][k] = new JButton();
+//                } System.out.println();
+//            } System.out.println();
+//        }
 
         JLabel pintuDepan = new JLabel("| PINTU DEPAN");
         JButton kondektur = new JButton("KONDEKTUR");
@@ -121,7 +139,7 @@ public class Bus extends JLayeredPane{
             else if(seatAvail[start][end][i] == 1)
                 seat[start][end][i].setBackground(new Color(181, 78, 78));
             else
-                seat[start][end][i].setBackground(Color.PINK);
+                seat[start][end][i].setBackground(new Color(220, 160, 166));
             leftPanel.add(seat[start][end][i]);
         }
         leftPanel.add(padding2);
@@ -148,7 +166,7 @@ public class Bus extends JLayeredPane{
             else if(seatAvail[start][end][i] == 1)
                 seat[start][end][i].setBackground(new Color(181, 78, 78));
             else
-                seat[start][end][i].setBackground(Color.PINK);
+                seat[start][end][i].setBackground(new Color(220, 160, 166));
             rightPanel.add(seat[start][end][i]);
         }
         if(flag){

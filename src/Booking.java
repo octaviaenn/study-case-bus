@@ -60,6 +60,10 @@ public class Booking extends JPanel {
         panelFilter.add(tombolReset);
         tombolReset.setBackground(new Color(0xDCA0A6));
 
+        JButton refresh = new JButton("Refresh");
+        panelFilter.add(refresh);
+        refresh.setBackground(new Color(0xDCA0A6));
+
         JButton back = new JButton("Close");
         panelFilter.add(back);
         back.setBackground(new Color(0xDCA0A6));
@@ -88,6 +92,12 @@ public class Booking extends JPanel {
             public void actionPerformed(ActionEvent e){
                 framePemesanan.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 framePemesanan.dispose();
+            }
+        });
+
+        refresh.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                perbaruiTabel();
             }
         });
     }

@@ -15,7 +15,7 @@ public class Order extends JPanel{
         this.frame = frame;
         this.panel = panel;
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        setPreferredSize(new Dimension(300, 700));
+        setPreferredSize(new Dimension(250, 400));
     }
 
     public void setObj(JLayeredPane bus){
@@ -41,9 +41,9 @@ public class Order extends JPanel{
                     for(int i=0; i<6; i++){
                         for(int j=i+1; j<=6; j++){
                             Bus.setSeatAvail(i, j, index, 2);
-                            Bus.setSeat(i, j, index, new Color(220, 160, 166));
+                            Bus.setSeat(i, j, index, new Color(0xDCA0A6));
                             Bus.setSeatAvail(j, i, index, 2);
-                            Bus.setSeat(j, i, index, new Color(220, 160, 166));
+                            Bus.setSeat(j, i, index, new Color(0xDCA0A6));
                         }
                     }
                     Bus.updateSeat();
@@ -82,7 +82,7 @@ public class Order extends JPanel{
                 noHp.setPreferredSize(new Dimension(180, 30));
                 final JButton submit = new JButton("Submit");
                 submit.setPreferredSize(new Dimension(100, 30));
-                submit.setBackground(new Color(68, 189, 100));
+                submit.setBackground(new Color(78, 153, 101));
 
                 nama.setPreferredSize(new Dimension(180, 30));
                 nik.setPreferredSize(new Dimension(180, 30));
@@ -120,7 +120,7 @@ public class Order extends JPanel{
                         if(nik.getText().isEmpty()){
                             if(countError>0) err += ", ";
                             countError++;
-                            err += "Nik";
+                            err += "NIK";
                         }
                         if(noHp.getText().isEmpty()){
                             if(countError>0) err += ", ";
@@ -132,7 +132,7 @@ public class Order extends JPanel{
 
                         if(err!=""){
                             error.setText(err+" tidak boleh kosong!");
-                            error.setForeground(Color.RED);
+                            error.setForeground(new Color(181, 78, 78));
                             info2.add(error);
                         }
 
@@ -153,7 +153,7 @@ public class Order extends JPanel{
 
                         if(err2!=""){
                             error2.setText(err2+" harus berupa angka");
-                            error2.setForeground(Color.RED);
+                            error2.setForeground(new Color(181, 78, 78));
                             info2.add(error2);
                         }
                         info2.revalidate();
@@ -238,13 +238,29 @@ public class Order extends JPanel{
                         }
 
                         //System.out.println("SUBMITTTTTTTTTT "+ select);
+                        try{
+                            int[][][] avail = Bus.getSeatAvail();
+                            BufferedWriter writer = new BufferedWriter(new FileWriter("seat/txt", false));
+                            String text="";
+                            System.out.println("masuk writer");
+                            for(int i=0; i<7; i++){
+                                for(int j=0; j<7; j++){
+                                    for(int k=1; k<41; k++){
+                                        text = text + i +","+ j +","+ k +","+avail[i][j][k] +"\n";
+                                    }
+                                }
+                            } writer.write(text);
+                            System.out.println(text);
+                        } catch (IOException ex){
+                            System.err.println("Terjadi kesalahan saat membaca file");
+                        }
                         select="";
                         bus.add(Bus.getOverlay(), JLayeredPane.PALETTE_LAYER);
                         bus.revalidate();
                         flag = false;
                         order.setVisible(false);
-                        Bus.updateSeat();
 
+                        Bus.updateSeat();
                         panel.revalidate();
 
                         JOptionPane.showMessageDialog(frame, "Tiket berhasil dipesan!");

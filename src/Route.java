@@ -87,7 +87,7 @@ public class Route extends JPanel {
                 bus.repaint();
                 if (harga[start][end].equals(invalid)) {
                     hargaTiket.setText(invalid);
-                    hargaTiket.setForeground(Color.RED);
+                    hargaTiket.setForeground(new Color(181, 78, 78));
                 } else {
                     Bus.updateSeat();
                     hargaTiket.setText("Harga tiket: " + harga[start][end]);
