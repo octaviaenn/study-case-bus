@@ -8,8 +8,10 @@ public class Route extends JPanel {
     private static JLabel hargaTiket = new JLabel("Rute bus tidak valid");
     private static int start=0;
     private static int end=0;
+    private static JLayeredPane bus;
 
-    public Route(JFrame frame) {
+    public Route(JFrame frame, JLayeredPane bus) {
+        this.bus = bus;
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setPreferredSize(new Dimension(400, 250));
         // setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -59,48 +61,50 @@ public class Route extends JPanel {
         ActionListener updateData = new ActionListener() {
             boolean changed = false;
             public void actionPerformed(ActionEvent e) {
-                    String selectedItem = (String) lokasiAwal.getSelectedItem();
-                    String selectedItem2 = (String) lokasiAkhir.getSelectedItem();
-                    start = switch (selectedItem) {
-                        case "Wilangan" -> 0;
-                        case "Ngawi" -> 1;
-                        case "Gendingan" -> 2;
-                        case "Solo" -> 3;
-                        case "Kartosuro" -> 4;
-                        case "Jogja" -> 5;
-                        case "Magelang" -> 6;
-                        default -> 0;
-                    };
-                    end = switch (selectedItem2) {
-                        case "Wilangan" -> 0;
-                        case "Ngawi" -> 1;
-                        case "Gendingan" -> 2;
-                        case "Solo" -> 3;
-                        case "Kartosuro" -> 4;
-                        case "Jogja" -> 5;
-                        case "Magelang" -> 6;
-                        default -> 0;
-                    };
-                    if (harga[start][end].equals(invalid)) {
-                        hargaTiket.setText(invalid);
-                        hargaTiket.setForeground(Color.RED);
-                    } else {
-                        Bus.updateSeat();
-                        hargaTiket.setText("Harga tiket: " + harga[start][end]);
-                        hargaTiket.setForeground(new Color(68, 189, 100));
-                    }
+                String selectedItem = (String) lokasiAwal.getSelectedItem();
+                String selectedItem2 = (String) lokasiAkhir.getSelectedItem();
+                start = switch (selectedItem) {
+                    case "Wilangan" -> 0;
+                    case "Ngawi" -> 1;
+                    case "Gendingan" -> 2;
+                    case "Solo" -> 3;
+                    case "Kartosuro" -> 4;
+                    case "Jogja" -> 5;
+                    case "Magelang" -> 6;
+                    default -> 0;
+                };
+                end = switch (selectedItem2) {
+                    case "Wilangan" -> 0;
+                    case "Ngawi" -> 1;
+                    case "Gendingan" -> 2;
+                    case "Solo" -> 3;
+                    case "Kartosuro" -> 4;
+                    case "Jogja" -> 5;
+                    case "Magelang" -> 6;
+                    default -> 0;
+                };
+                bus.remove(Bus.getOverlay());
+                bus.repaint();
+                if (harga[start][end].equals(invalid)) {
+                    hargaTiket.setText(invalid);
+                    hargaTiket.setForeground(Color.RED);
+                } else {
+                    Bus.updateSeat();
+                    hargaTiket.setText("Harga tiket: " + harga[start][end]);
+                    hargaTiket.setForeground(new Color(68, 189, 100));
+                }
 
-                    if (changed) {
-                        info.remove(hargaTiket);
-                        info.revalidate();
-                        info.repaint();
-                        info.add(hargaTiket);
-                    }
+                if (changed) {
+                    info.remove(hargaTiket);
+                    info.revalidate();
+                    info.repaint();
+                    info.add(hargaTiket);
+                }
 
                 changed = true;
 
             }
-            };
+        };
 
         lokasiAwal.addActionListener(updateData);
         lokasiAkhir.addActionListener(updateData);
@@ -118,9 +122,5 @@ public class Route extends JPanel {
         return end;
     }
 
-//    private
-//    }
 
-//    public static
-//    }
 }

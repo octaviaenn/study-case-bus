@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Bus extends JPanel{
+public class Bus extends JLayeredPane{
     private static int[][][] seatAvail = new int[7][7][40];
     private static final JButton[][][] seat = new JButton[7][7][40];
     private boolean init = true;
@@ -10,30 +10,32 @@ public class Bus extends JPanel{
     private static JPanel leftPanel = new JPanel();
     private static JPanel rightPanel = new JPanel();
     private static JPanel order;
-    private static JPanel bus;
+    private static JLayeredPane bus;
     private static boolean flag = false;
+    private static JPanel overlay = new JPanel();
 
 
     public Bus(JPanel order, JFrame frame){
         this.frame = frame;
         this.order = order;
+        JPanel mainPanel = new JPanel();
 //        bus = Main.getTopPanel();
-        setLayout(new BorderLayout());
+        setLayout(null);
         setPreferredSize(new Dimension(400, 450));
 
 
-        leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setPreferredSize(new Dimension(200, 450));
-        add(leftPanel, BorderLayout.WEST);
+        //mainPanel.add(leftPanel, BorderLayout.WEST);
 
 
-        rightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        //rightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         rightPanel.setPreferredSize(new Dimension(200, 450));
-        add(rightPanel, BorderLayout.EAST);
+        //mainPanel.add(rightPanel, BorderLayout.EAST);
 
 
 
-    // nanti kalo datanya ada, init = false;
+        // nanti kalo datanya ada, init = false;
         if(init){
             for (int i = 0; i < 7; i++) {
                 for(int j = 0; j<7; j++){
@@ -46,12 +48,30 @@ public class Bus extends JPanel{
         }
 
         updateSeat();
+        overlay.setOpaque(true);
+        overlay.setBackground(new Color(220,160,166,50));
+        overlay.setLayout(null);
+        overlay.setPreferredSize(new Dimension(400, 450));
+        leftPanel.setBounds(0, 0, 200, 450);
+        rightPanel.setBounds(200, 0, 200, 450);
+        overlay.setBounds(0, 0, 400, 450);
+
+        JLabel dereng = new JLabel("Silahkan Pilih Rute Terlebih Dahulu");
+        overlay.add(dereng);
+        add(leftPanel, JLayeredPane.DEFAULT_LAYER);
+        add(rightPanel, JLayeredPane.DEFAULT_LAYER);
+        //add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+        add(overlay, JLayeredPane.PALETTE_LAYER);
         setVisible(true);
 
     }
 
-    public void setObj(JPanel bus){
+    public void setObj(JLayeredPane bus){
         this.bus = bus;
+    }
+
+    public static JPanel getOverlay(){
+        return overlay;
     }
 
     public static void updateSeat(){
@@ -64,14 +84,14 @@ public class Bus extends JPanel{
             for(int j = 0; j<7; j++){
                 for(int k = 0; k<40; k++){
                     System.out.print(seatAvail[i][j][k]+" ");
-                   // seat[i][j][k] = new JButton();
+                    // seat[i][j][k] = new JButton();
                 } System.out.println();
             } System.out.println();
         }
 
         JLabel pintuDepan = new JLabel("| PINTU DEPAN");
         JButton kondektur = new JButton("KONDEKTUR");
-        kondektur.setBackground(Color.LIGHT_GRAY);
+        kondektur.setBackground(new Color(0xDCA0A6));
         JPanel padding1 = new JPanel();
         JPanel padding2 = new JPanel();
         padding1.setPreferredSize(new Dimension(200, 10));
@@ -81,7 +101,7 @@ public class Bus extends JPanel{
 
         JLabel pintuBelakang = new JLabel("| PINTU BELAKANG");
         JButton toilet = new JButton("TOILET");
-        toilet.setBackground(Color.LIGHT_GRAY);
+        toilet.setBackground(new Color(0xDCA0A6));
 
         leftPanel.add(pintuDepan);
         leftPanel.add(kondektur);
@@ -109,7 +129,7 @@ public class Bus extends JPanel{
         leftPanel.add(toilet);
 
         JButton driver = new JButton("DRIVER");
-        driver.setBackground(Color.LIGHT_GRAY);
+        driver.setBackground(new Color(0xDCA0A6));
         JPanel padding = new JPanel();
         padding.setPreferredSize(new Dimension(200, 30));
         String[] B = { "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15",
@@ -135,6 +155,7 @@ public class Bus extends JPanel{
             bus.revalidate();
             bus.repaint();
         } flag = true;
+
         frame.revalidate();
     }
 
@@ -149,12 +170,12 @@ public class Bus extends JPanel{
     public static void setSeatAvail(int start, int end, int idx, int val){
         if(seatAvail[start][end][idx] == 1)  return;
         seatAvail[start][end][idx] = val;
-        System.out.println("Successfully changed "+seatAvail[start][end][idx]);
+        //System.out.println("Successfully changed "+seatAvail[start][end][idx]);
     }
 
     public static void setSeat(int start, int end, int idx, Color val){
         if(seatAvail[start][end][idx] == 1) return;
         seat[start][end][idx].setBackground(val);
-        System.out.println("Successfully changed "+start+" "+end+" "+idx+" to color:"+val);
+        //System.out.println("Successfully changed "+start+" "+end+" "+idx+" to color:"+val);
     }
 }

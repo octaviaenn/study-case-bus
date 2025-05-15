@@ -44,6 +44,7 @@ public class Order extends JPanel{
                     Bus.updateSeat();
                     frame.revalidate();
                     select+=String.format("%d,%d,%d\n", start, end, index);
+                    System.out.println("SElect:"+select);
                 } else{
                     System.out.println("Masuk else buat unselect");
                     select.replace(String.format("%d,%d,%d\n", start, end, index), "").trim();
@@ -56,13 +57,9 @@ public class Order extends JPanel{
                         }
                     }
                     Bus.updateSeat();
-//                    seatAvail[start][end][index] = 0;
-//                    seat[start][end][index].setBackground(new Color(78, 153, 101));
                     frame.revalidate();
+                    System.out.println("UNSElect:"+select);
                 }
-                // JOptionPane.showMessageDialog(panel, "Kursi berhasil dipilih!\nnyoba doang
-                // ges");
-                // setVisible(false);
                 if(flag) return;
                 order.removeAll();
                 order.revalidate();
@@ -71,9 +68,6 @@ public class Order extends JPanel{
                 JLabel inputNama = new JLabel("Isi nama anda: ");
                 JLabel inputNik = new JLabel("Isi NIK anda: ");
                 JLabel inputNoHp = new JLabel("Isi nomor HP anda: ");
-                // String[] kota = {"Wilangan", "Ngawi", "Gendingan", "Solo", "Kartosuro",
-                // "Jogja", "Magelang"};
-
                 final JTextField nama = new JTextField();
                 nama.setPreferredSize(new Dimension(180, 30));
                 final JTextField nik = new JTextField();
@@ -84,8 +78,6 @@ public class Order extends JPanel{
                 submit.setPreferredSize(new Dimension(100, 30));
                 submit.setBackground(new Color(68, 189, 100));
 
-                // JPanel space = new JPanel();
-                // space.setPreferredSize(new Dimension(9999, 9999));
                 nama.setPreferredSize(new Dimension(180, 30));
                 nik.setPreferredSize(new Dimension(180, 30));
                 noHp.setPreferredSize(new Dimension(180, 30));
@@ -110,8 +102,6 @@ public class Order extends JPanel{
 
                 KeyListener clearError = new KeyAdapter() {
                     public void keyTyped(KeyEvent e) {
-//                        if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty())
-//                            return;
                         info2.removeAll();
 
                         int countError = 0;
@@ -176,10 +166,6 @@ public class Order extends JPanel{
                     public void actionPerformed(ActionEvent e) {
 
                         if (nama.getText().isEmpty() || nik.getText().isEmpty() || noHp.getText().isEmpty()) {
-                            // JOptionPane.showMessageDialog(panel, "Data tidak boleh kosong!");
-//                            if (isError)
-//                                return;
-
                             isError = true;
                             return;
                         }
@@ -196,6 +182,16 @@ public class Order extends JPanel{
                             st = Integer.parseInt(idx[0]);
                             en = Integer.parseInt(idx[1]);
                             in = Integer.parseInt(idx[2]);
+
+                            for(int j=0; j<7; j++){
+                                for(int k=0;  k<7; k++){
+                                    Bus.setSeat(j, k, in, new Color(78, 153, 101));
+                                    Bus.setSeatAvail(j, k, in, 0);
+                                }
+                            }
+
+                            Booking.addOrder(
+                                    nama.getText(), nik.getText(), noHp.getText(), st, en, in);
 
                             if(st<en){
                                 for(int j=st+1; j<=en; j++){
@@ -216,57 +212,20 @@ public class Order extends JPanel{
                                     }
                                 }
                             }
-
-
                         }
 
-
-
+                        System.out.println("SUBMITTTTTTTTTT "+ select);
                         select="";
+
                         flag = false;
                         order.setVisible(false);
                         Bus.updateSeat();
 
                         panel.revalidate();
+
                         JOptionPane.showMessageDialog(frame, "Tiket berhasil dipesan!");
 
 
-                        // semua filewriter gbs keknya gara gara ga di ide macem intellij dah
-                        // try (BufferedWriter writer = new BufferedWriter(new FileWriter("seat.txt",
-                        // true))) {
-                        // String text = String.valueOf(indexChar) + "," + String.valueOf(index) +
-                        // "\n";
-                        // writer.write(text);
-                        // System.out.println("Write success.");
-                        // } catch (IOException e) {
-                        // e.printStackTrace();
-                        // System.err.println("Gagal menulis ke file");
-                        // }
-
-                        // try (var writer = new FileWriter("seat.txt", true)) {
-                        // String text = String.valueOf(indexChar) + String.valueOf(index) + ",";
-                        // writer.write(text);
-                        // } catch (IOException e) {
-                        // System.err.println("Gagal menulis ke file");
-                        // }
-                        // try (FileWriter writer = new FileWriter("seat.txt", true)) {
-                        // writer.write(String.valueOf(indexChar) + String.valueOf(index) + ",");
-                        // //System.out.println(indexChar + index + ",");
-                        // } catch (IOException e) {
-                        // //System.err.println("Terjadi kesalahan saat menyimpan data ke seat.txt!");
-                        // e.printStackTrace(); // Optional, for debugging
-                        // }
-
-                        // try(FileWriter writer = new FileWriter("data.txt", true)){
-                        // writer.write(nama+" "+nik+" "+noHp+" "+lokasiAwal+" "+lokasiAkhir+"
-                        // "+hargaTiket+"\n");
-                        // JOptionPane.showMessageDialog(panel, "Data berhasil disimpan ke data.txt!")
-                        // } catch(IOException e){
-                        // JOptionPane.showMessageDialog(panel, "Terjadi kesalahan saat menyimpan data
-                        // ke data.txt!");
-                        // }
-
-                        //frame.revalidate();
                     }
                 });
 
